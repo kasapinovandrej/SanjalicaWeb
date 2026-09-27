@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Paleta */
+  --color-cream: #fbf6f2;
+  --color-blush: #f5e6e8;
+  --color-ink: #2e0e1f;
+  --color-body: #5b4250;
+  --color-muted: #7a6570;
+  --color-plum: #9a3a63;
+  --color-rose: #c6084d;
+  --color-rose-dark: #8e0636;
+  --color-bordo: #561136;
+  --color-petal: #f4a7c0;
+  --color-on-bordo: #f1d6e0;
+  --color-line: #eedfe0;
+  --color-line-strong: #dcc5cb;
+
+  /* Fontovi (postavljeni u app/layout.tsx preko next/font) */
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --font-serif: var(--font-instrument-serif), Georgia, serif;
+}
+
+@layer base {
+  html {
+    @apply bg-cream font-sans text-ink antialiased;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-rose;
+  }
+}
+
+@utility eyebrow {
+  @apply text-xs font-semibold tracking-[0.14em] text-plum uppercase lg:text-sm;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
