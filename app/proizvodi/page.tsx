@@ -43,7 +43,7 @@ export default async function ProductsPage({
           />
 
           <nav aria-label="Kategorije">
-            <ul className="no-scrollbar -mx-5 flex gap-2.5 overflow-x-auto px-5">
+            <ul className="flex flex-wrap gap-2.5">
               {filters.map((f) => (
                 <li key={f.href} className="shrink-0">
                   <Link

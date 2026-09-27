@@ -12,7 +12,7 @@ const highlights = [
 export default function Hero() {
   return (
     <section>
-      <Container className="grid items-center gap-6 pt-6 pb-12 lg:grid-cols-[580px_1fr] lg:gap-[60px] lg:pt-14 lg:pb-20">
+      <Container className="grid items-center gap-6 pt-6 pb-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-9 lg:pt-14 lg:pb-20 xl:grid-cols-[580px_1fr] xl:gap-[60px]">
         {/* Tekst */}
         <div className="order-2 flex flex-col gap-[22px] lg:order-1 lg:gap-7">
           <p className="eyebrow">Ručno rađeni buketi i pokloni</p>
@@ -42,14 +42,14 @@ export default function Hero() {
         </div>
 
         {/* Slika u obliku luka */}
-        <div className="relative order-1 lg:order-2 lg:h-[624px]">
-          <div className="relative h-[380px] w-full overflow-hidden rounded-t-full rounded-b-[20px] sm:h-[480px] lg:absolute lg:top-0 lg:right-0 lg:h-[624px] lg:w-[540px] lg:rounded-b-[28px]">
+        <div className="relative order-1 w-full lg:order-2 lg:aspect-[540/624] lg:h-auto lg:max-w-[540px] lg:justify-self-end">
+          <div className="relative h-[380px] w-full overflow-hidden rounded-t-full rounded-b-[20px] sm:h-[480px] lg:absolute lg:top-0 lg:right-0 lg:h-full lg:w-full lg:rounded-b-[28px]">
             <Image
               src="/assets/images/bg-light-rose.png"
               alt="Buket ruža od sojinog voska u beloj korpi"
               fill
               priority
-              sizes="(min-width: 1024px) 540px, 100vw"
+              sizes="(min-width: 1280px) 540px, (min-width: 1024px) 45vw, 100vw"
               className="object-cover object-[72%_50%]"
             />
           </div>

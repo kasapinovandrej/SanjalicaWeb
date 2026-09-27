@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { navigation } from "@/lib/site";
 import ButtonLink from "./ui/ButtonLink";
@@ -18,6 +18,23 @@ export default function Header() {
   // posle navigacije se automatski zatvara.
   const [openOn, setOpenOn] = useState<string | null>(null);
   const open = openOn === pathname;
+
+  useEffect(() => {
+    if (!open) return;
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpenOn(null);
+    };
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [open]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-cream/90 backdrop-blur-md">
@@ -74,35 +91,47 @@ export default function Header() {
         </button>
       </div>
 
-      {open && (
-        <nav
-          id="mobilni-meni"
-          aria-label="Mobilni meni"
-          className="border-t border-line bg-cream px-5 pt-4 pb-8 md:hidden"
-        >
-          <ul className="flex flex-col">
-            {navigation.map((item) => {
-              const active = isActive(pathname, item.href);
-              return (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    aria-current={active ? "page" : undefined}
-                    className={`block border-b border-line py-4 font-serif text-3xl ${
-                      active ? "text-rose" : "text-ink"
-                    }`}
-                  >
-                    {item.name}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-          <ButtonLink href="/kontakt" className="mt-6 w-full">
-            Poruči poklon
-          </ButtonLink>
-        </nav>
-      )}
+      <button
+        type="button"
+        aria-label="Zatvori meni"
+        aria-hidden={!open}
+        tabIndex={-1}
+        onClick={() => setOpenOn(null)}
+        className={`absolute inset-x-0 top-full h-[calc(100dvh-72px)] bg-ink/35 transition-opacity duration-300 motion-reduce:transition-none md:hidden ${
+          open ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      />
+      <nav
+        id="mobilni-meni"
+        aria-label="Mobilni meni"
+        aria-hidden={!open}
+        inert={!open}
+        className={`absolute top-full right-0 z-10 h-[calc(100dvh-72px)] w-[min(88vw,380px)] overflow-y-auto border-t border-line bg-cream px-6 pt-5 pb-8 shadow-2xl transition-transform duration-300 ease-out motion-reduce:transition-none md:hidden ${
+          open ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <ul className="flex flex-col">
+          {navigation.map((item) => {
+            const active = isActive(pathname, item.href);
+            return (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`block border-b border-line py-4 font-serif text-3xl ${
+                    active ? "text-rose" : "text-ink"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+        <ButtonLink href="/kontakt" className="mt-6 w-full">
+          Poruči poklon
+        </ButtonLink>
+      </nav>
     </header>
   );
 }
