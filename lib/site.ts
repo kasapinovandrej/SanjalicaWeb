@@ -2,11 +2,11 @@
 export const site = {
   name: "Sanjalica Gift Shop",
   tagline: "Ručno rađeni buketi i pokloni",
-  phone: "[TELEFON]", // npr. "+381 60 123 4567"
-  email: "[EMAIL]", // npr. "kontakt@sanjalica.rs"
-  city: "[GRAD]",
-  instagram: "#", // pun link do Instagram profila
-  facebook: "#", // pun link do Facebook stranice
+  phone: "+381 63 7383 079", // npr. "+381 60 123 4567"
+  email: "sanjalica98kv@gmail.com", // npr. "kontakt@sanjalica.rs"
+  city: "Kraljevo",
+  instagram: "https://www.instagram.com/sanjalica_giftshop/", // pun link do Instagram profila
+  // facebook: "https://www.facebook.com/sanjalicaGiftShop", // pun link do Facebook stranice
   delivery: "[ROK IZRADE] · [NAČIN DOSTAVE I GRADOVI]",
 };
 

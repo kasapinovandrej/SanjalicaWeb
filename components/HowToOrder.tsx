@@ -13,7 +13,8 @@ const steps = [
   },
   {
     title: "Preuzimanje ili dostava",
-    text: site.delivery,
+    // text: site.delivery,
+    text: "Rok izrade i način dostave zavise od proizvoda i lokacije.",
   },
 ];
 

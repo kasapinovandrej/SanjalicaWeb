@@ -36,7 +36,10 @@ export default function Footer() {
 
           <div className="flex flex-col gap-2.5 lg:gap-3">
             <span className={headingClass}>Kontakt</span>
-            <a href={`tel:${site.phone.replace(/\s/g, "")}`} className={linkClass}>
+            <a
+              href={`tel:${site.phone.replace(/\s/g, "")}`}
+              className={linkClass}
+            >
               {site.phone}
             </a>
             <a href={`mailto:${site.email}`} className={linkClass}>
@@ -47,17 +50,24 @@ export default function Footer() {
 
           <div className="flex flex-col gap-2.5 lg:gap-3">
             <span className={headingClass}>Pratite nas</span>
-            <a href={site.instagram} className={linkClass} target="_blank" rel="noopener noreferrer">
+            <a
+              href={site.instagram}
+              className={linkClass}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Instagram
             </a>
-            <a href={site.facebook} className={linkClass} target="_blank" rel="noopener noreferrer">
+            {/* <a href={site.facebook} className={linkClass} target="_blank" rel="noopener noreferrer">
               Facebook
-            </a>
+            </a> */}
           </div>
         </div>
 
         <div className="flex justify-between border-t border-line pt-5 text-[13px] text-muted lg:pt-6">
-          <span>© {new Date().getFullYear()} {site.name}</span>
+          <span>
+            © {new Date().getFullYear()} {site.name}
+          </span>
           <span className="hidden lg:inline">
             Napravljeno s ljubavlju, darovano od srca
           </span>
