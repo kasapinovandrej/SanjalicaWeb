@@ -2,11 +2,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { getCategories } from "@/api/categories/categoriseApi";
+import createServerSupabase from "@/api/supabaseServer";
+import { CategoryDeleteProvider, DeleteCategoryButton } from "./CategoryDelete";
+import { CategoryEditProvider, EditCategoryButton } from "./CategoryEdit";
 import Container from "./ui/Container";
 import SectionHeading from "./ui/SectionHeading";
 
 export default async function Categories() {
-  const categories = await getCategories();
+  const supabase = await createServerSupabase();
+  const [
+    categories,
+    {
+      data: { user },
+    },
+  ] = await Promise.all([getCategories(), supabase.auth.getUser()]);
 
   return (
     <section className="py-16 lg:py-28">
@@ -22,42 +31,52 @@ export default async function Categories() {
           </p>
         </div>
 
-        <ul className="flex flex-col gap-4 lg:grid lg:grid-cols-3 lg:gap-10">
-          {categories.map((category) => (
-            <li key={category.slug}>
-              <Link
-                href={`/proizvodi?kategorija=${category.slug}`}
-                className="group flex items-center gap-4 lg:flex-col lg:items-stretch lg:gap-6"
-              >
-                <div className="relative h-[140px] w-28 shrink-0 overflow-hidden rounded-[14px] lg:h-[460px] lg:w-full lg:rounded-[20px]">
-                  <Image
-                    src={category.image}
-                    alt={category.imageAlt}
-                    fill
-                    sizes="(min-width: 1024px) 380px, 112px"
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                  />
-                </div>
-                <div className="flex flex-col gap-1.5 lg:gap-2.5">
-                  <h3 className="font-serif text-[25px] leading-[1.1] lg:text-[32px]">
-                    {category.title}
-                  </h3>
-                  <p className="text-sm leading-normal text-body lg:text-base lg:leading-relaxed">
-                    {category.description}
-                  </p>
-                  <span className="hidden items-center gap-1.5 pt-1 text-[15px] font-semibold text-rose group-hover:text-rose-dark lg:flex">
-                    {category.linkLabel}
-                    <ArrowRight
-                      size={16}
-                      aria-hidden
-                      className="transition-transform group-hover:translate-x-1"
-                    />
-                  </span>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <CategoryEditProvider>
+          <CategoryDeleteProvider>
+            <ul className="flex flex-col gap-4 lg:grid lg:grid-cols-3 lg:gap-10">
+              {categories.map((category) => (
+                <li key={category.slug} className="relative">
+                  {user && (
+                    <div className="absolute top-2 right-2 z-10 flex gap-2 lg:top-3 lg:right-3">
+                      <EditCategoryButton category={category} />
+                      <DeleteCategoryButton category={category} />
+                    </div>
+                  )}
+                  <Link
+                    href={`/proizvodi?kategorija=${category.slug}`}
+                    className="group flex items-center gap-4 lg:flex-col lg:items-stretch lg:gap-6"
+                  >
+                    <div className="relative h-[140px] w-28 shrink-0 overflow-hidden rounded-[14px] lg:h-[460px] lg:w-full lg:rounded-[20px]">
+                      <Image
+                        src={category.image}
+                        alt={category.imageAlt}
+                        fill
+                        sizes="(min-width: 1024px) 380px, 112px"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5 lg:gap-2.5">
+                      <h3 className="font-serif text-[25px] leading-[1.1] lg:text-[32px]">
+                        {category.title}
+                      </h3>
+                      <p className="text-sm leading-normal text-body lg:text-base lg:leading-relaxed">
+                        {category.description}
+                      </p>
+                      <span className="hidden items-center gap-1.5 pt-1 text-[15px] font-semibold text-rose group-hover:text-rose-dark lg:flex">
+                        {category.linkLabel}
+                        <ArrowRight
+                          size={16}
+                          aria-hidden
+                          className="transition-transform group-hover:translate-x-1"
+                        />
+                      </span>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </CategoryDeleteProvider>
+        </CategoryEditProvider>
       </Container>
     </section>
   );
