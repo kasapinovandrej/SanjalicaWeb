@@ -68,6 +68,14 @@ export default function Footer() {
           <span>
             © {new Date().getFullYear()} {site.name}
           </span>
+          <a
+            href="https://www.linkedin.com/in/andrej-kasapinov-19132427/"
+            className="hover:text-rose"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Developed by Andrej Kasapinov
+          </a>
           <span className="hidden lg:inline">
             Napravljeno s ljubavlju, darovano od srca
           </span>
