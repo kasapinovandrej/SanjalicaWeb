@@ -3,6 +3,8 @@ import { DM_Sans, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { ProductDeleteProvider } from "@/components/ProductDelete";
+import { ProductEditProvider } from "@/components/ProductEdit";
 
 const dmSans = DM_Sans({
   subsets: ["latin", "latin-ext"],
@@ -36,9 +38,13 @@ export default function RootLayout({
       className={`${dmSans.variable} ${instrumentSerif.variable}`}
     >
       <body>
-        <Header />
-        <main>{children}</main>
-        <Footer />
+        <ProductEditProvider>
+          <ProductDeleteProvider>
+            <Header />
+            <main>{children}</main>
+            <Footer />
+          </ProductDeleteProvider>
+        </ProductEditProvider>
       </body>
     </html>
   );

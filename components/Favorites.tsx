@@ -11,7 +11,13 @@ import SectionHeading from "./ui/SectionHeading";
 
 const MOBILE_COUNT = 4;
 
-export default function Favorites({ products }: { products: Product[] }) {
+export default function Favorites({
+  products,
+  isAdmin = false,
+}: {
+  products: Product[];
+  isAdmin?: boolean;
+}) {
   const trackRef = useRef<HTMLUListElement>(null);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(true);
@@ -89,7 +95,11 @@ export default function Favorites({ products }: { products: Product[] }) {
                 i >= MOBILE_COUNT ? "hidden lg:block" : ""
               }`}
             >
-              <ProductCard product={product} compactOnMobile />
+              <ProductCard
+                product={product}
+                compactOnMobile
+                isAdmin={isAdmin}
+              />
             </li>
           ))}
         </ul>

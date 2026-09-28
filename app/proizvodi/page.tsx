@@ -6,6 +6,7 @@ import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { getCategories } from "@/api/categories/categoriseApi";
 import { getProducts } from "@/api/products/productsApi";
+import { getCurrentUser } from "@/api/supabaseServer";
 
 export const metadata: Metadata = {
   title: "Proizvodi",
@@ -19,9 +20,10 @@ export default async function ProductsPage({
   searchParams: Promise<{ kategorija?: string }>;
 }) {
   const { kategorija } = await searchParams;
-  const [categories, products] = await Promise.all([
+  const [categories, products, user] = await Promise.all([
     getCategories(),
     getProducts(),
+    getCurrentUser(),
   ]);
   const active = categories.find((c) => c.slug === kategorija);
   const list = active
@@ -70,7 +72,11 @@ export default async function ProductsPage({
           <ul className="grid grid-cols-2 gap-x-3.5 gap-y-8 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-12">
             {list.map((product) => (
               <li key={product.slug}>
-                <ProductCard product={product} compactOnMobile />
+                <ProductCard
+                  product={product}
+                  compactOnMobile
+                  isAdmin={Boolean(user)}
+                />
               </li>
             ))}
           </ul>

@@ -6,7 +6,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ArrowDownToLine, LoaderCircle, Sparkles } from "lucide-react";
 import { createProduct, updateProduct } from "@/api/products/productsApi";
-import { removeImages, resolveImage } from "@/api/images/imagesApi";
+import {
+  removeImages,
+  removeImageUrls,
+  resolveImage,
+} from "@/api/images/imagesApi";
 import type { Category } from "@/api/categories/categoriseType";
 import type { Product } from "@/api/products/productsType";
 import MultiImageDropzone from "./MultiImageDropzone";
@@ -89,6 +93,13 @@ export default function ProductForm({
       const saved = product
         ? await updateProduct(product.id, input)
         : await createProduct(input);
+      if (product) {
+        // Photos removed in the form are no longer used anywhere. A failed cleanup
+        // must not reach the catch below, which would delete the new uploads.
+        await removeImageUrls(
+          product.image.filter((url) => !imageUrls.includes(url)),
+        ).catch(() => {});
+      }
       form.reset(toFormValues(isEdit ? saved : undefined));
       setImagesKey((current) => current + 1);
       onSaved(saved);
@@ -109,7 +120,7 @@ export default function ProductForm({
           Naziv proizvoda
           <input
             className={inputClass}
-            placeholder="Pastelni buket"
+            placeholder="Unesi ime proizvoda"
             {...form.register("name", {
               // Changing the slug of an existing product would break its URL.
               onChange: (event) =>
@@ -125,7 +136,7 @@ export default function ProductForm({
           URL oznaka
           <input
             className={inputClass}
-            placeholder="pastelni-buket"
+            placeholder="camel-case ime prizvoda"
             {...form.register("slug")}
           />
           <FieldError>{errors.slug?.message}</FieldError>
@@ -190,8 +201,7 @@ export default function ProductForm({
             form.setValue("images", values, { shouldValidate: true })
           }
           error={
-            errors.images?.message ??
-            errors.images?.find?.(Boolean)?.message
+            errors.images?.message ?? errors.images?.find?.(Boolean)?.message
           }
         />
       </div>

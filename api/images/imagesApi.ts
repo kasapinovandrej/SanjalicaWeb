@@ -31,3 +31,16 @@ export const resolveImage = async (
 export const removeImages = async (paths: string[]) => {
   if (paths.length) await supabase.storage.from(storageBucket).remove(paths);
 };
+
+const publicPathPrefix = `/storage/v1/object/public/${storageBucket}/`;
+
+// Only images uploaded to our bucket are removed; static /assets URLs are skipped.
+export const removeImageUrls = async (urls: string[]) => {
+  const paths = urls.flatMap((url) => {
+    const index = url.indexOf(publicPathPrefix);
+    return index === -1
+      ? []
+      : [decodeURIComponent(url.slice(index + publicPathPrefix.length))];
+  });
+  await removeImages(paths);
+};

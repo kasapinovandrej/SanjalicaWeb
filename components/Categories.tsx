@@ -2,20 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { getCategories } from "@/api/categories/categoriseApi";
-import createServerSupabase from "@/api/supabaseServer";
+import { getCurrentUser } from "@/api/supabaseServer";
 import { CategoryDeleteProvider, DeleteCategoryButton } from "./CategoryDelete";
 import { CategoryEditProvider, EditCategoryButton } from "./CategoryEdit";
 import Container from "./ui/Container";
 import SectionHeading from "./ui/SectionHeading";
 
 export default async function Categories() {
-  const supabase = await createServerSupabase();
-  const [
-    categories,
-    {
-      data: { user },
-    },
-  ] = await Promise.all([getCategories(), supabase.auth.getUser()]);
+  const [categories, user] = await Promise.all([
+    getCategories(),
+    getCurrentUser(),
+  ]);
 
   return (
     <section className="py-16 lg:py-28">
