@@ -2,7 +2,7 @@
 export const site = {
   name: "Sanjalica Gift Shop",
   tagline: "Ručno rađeni buketi i pokloni",
-  phone: "+381 63 7383 079", // npr. "+381 60 123 4567"
+  phone: "+381 63 738 3079", // npr. "+381 60 123 4567"
   email: "sanjalica98kv@gmail.com", // npr. "kontakt@sanjalica.rs"
   city: "Kraljevo",
   instagram: "https://www.instagram.com/sanjalica_giftshop/",

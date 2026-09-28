@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import * as Dialog from "@radix-ui/react-dialog";
 import { Menu, X } from "lucide-react";
 import { navigation } from "@/lib/site";
 import ButtonLink from "./ui/ButtonLink";
@@ -18,23 +19,6 @@ export default function Header() {
   // posle navigacije se automatski zatvara.
   const [openOn, setOpenOn] = useState<string | null>(null);
   const open = openOn === pathname;
-
-  useEffect(() => {
-    if (!open) return;
-
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpenOn(null);
-    };
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", closeOnEscape);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", closeOnEscape);
-    };
-  }, [open]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-cream/90 backdrop-blur-md">
@@ -79,59 +63,67 @@ export default function Header() {
           </ButtonLink>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setOpenOn(open ? null : pathname)}
-          aria-expanded={open}
-          aria-controls="mobilni-meni"
-          aria-label={open ? "Zatvori meni" : "Otvori meni"}
-          className="flex h-12 w-12 items-center justify-center rounded-full border-[1.5px] border-ink text-ink md:hidden"
+        <Dialog.Root
+          open={open}
+          onOpenChange={(next) => setOpenOn(next ? pathname : null)}
         >
-          {open ? <X size={20} /> : <Menu size={20} />}
-        </button>
-      </div>
+          <Dialog.Trigger
+            aria-label="Otvori meni"
+            className="flex h-12 w-12 items-center justify-center rounded-full border-[1.5px] border-ink text-ink md:hidden"
+          >
+            <Menu size={20} />
+          </Dialog.Trigger>
 
-      <button
-        type="button"
-        aria-label="Zatvori meni"
-        aria-hidden={!open}
-        tabIndex={-1}
-        onClick={() => setOpenOn(null)}
-        className={`absolute inset-x-0 top-full h-[calc(100dvh-72px)] bg-ink/35 transition-opacity duration-300 motion-reduce:transition-none md:hidden ${
-          open ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
-      />
-      <nav
-        id="mobilni-meni"
-        aria-label="Mobilni meni"
-        aria-hidden={!open}
-        inert={!open}
-        className={`absolute top-full right-0 z-10 h-[calc(100dvh-72px)] w-[min(88vw,380px)] overflow-y-auto border-t border-line bg-cream px-6 pt-5 pb-8 shadow-2xl transition-transform duration-300 ease-out motion-reduce:transition-none md:hidden ${
-          open ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <ul className="flex flex-col">
-          {navigation.map((item) => {
-            const active = isActive(pathname, item.href);
-            return (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  aria-current={active ? "page" : undefined}
-                  className={`block border-b border-line py-4 font-serif text-3xl ${
-                    active ? "text-rose" : "text-ink"
-                  }`}
+          <Dialog.Portal>
+            <Dialog.Overlay className="fixed inset-0 z-50 bg-ink/35 data-[state=closed]:animate-fade-out data-[state=open]:animate-fade-in motion-reduce:animate-none md:hidden" />
+            <Dialog.Content
+              aria-describedby={undefined}
+              className="fixed inset-y-0 right-0 z-50 flex w-[min(88vw,380px)] flex-col overflow-y-auto bg-cream shadow-2xl data-[state=closed]:animate-drawer-out data-[state=open]:animate-drawer-in motion-reduce:animate-none md:hidden"
+            >
+              <div className="flex h-[72px] shrink-0 items-center justify-between border-b border-line px-6">
+                <Dialog.Title className="font-serif text-2xl text-ink">
+                  Meni
+                </Dialog.Title>
+                <Dialog.Close
+                  aria-label="Zatvori meni"
+                  className="flex h-12 w-12 items-center justify-center rounded-full border-[1.5px] border-ink text-ink"
                 >
-                  {item.name}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-        <ButtonLink href="/kontakt" className="mt-6 w-full">
-          Poruči poklon
-        </ButtonLink>
-      </nav>
+                  <X size={20} />
+                </Dialog.Close>
+              </div>
+
+              <nav aria-label="Mobilni meni" className="px-6 pt-5 pb-8">
+                <ul className="flex flex-col">
+                  {navigation.map((item) => {
+                    const active = isActive(pathname, item.href);
+                    return (
+                      <li key={item.href}>
+                        <Link
+                          href={item.href}
+                          aria-current={active ? "page" : undefined}
+                          onClick={() => setOpenOn(null)}
+                          className={`block border-b border-line py-4 font-serif text-3xl ${
+                            active ? "text-rose" : "text-ink"
+                          }`}
+                        >
+                          {item.name}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <ButtonLink
+                  href="/kontakt"
+                  className="mt-6 w-full"
+                  onClick={() => setOpenOn(null)}
+                >
+                  Poruči poklon
+                </ButtonLink>
+              </nav>
+            </Dialog.Content>
+          </Dialog.Portal>
+        </Dialog.Root>
+      </div>
     </header>
   );
 }

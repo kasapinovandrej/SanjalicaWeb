@@ -17,6 +17,7 @@ type ButtonLinkProps = {
   variant?: Variant;
   size?: "md" | "lg";
   className?: string;
+  onClick?: () => void;
 };
 
 export default function ButtonLink({
@@ -25,6 +26,7 @@ export default function ButtonLink({
   variant = "primary",
   size = "lg",
   className = "",
+  onClick,
 }: ButtonLinkProps) {
   const sizes =
     size === "lg"
@@ -35,6 +37,7 @@ export default function ButtonLink({
   return (
     <Link
       href={href}
+      onClick={onClick}
       {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       className={`inline-flex items-center justify-center gap-2.5 rounded-full font-semibold transition-colors ${sizes} ${variants[variant]} ${className}`}
     >

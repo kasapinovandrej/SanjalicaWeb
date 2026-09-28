@@ -32,14 +32,14 @@ export default function AboutPage() {
               To se ni danas nije promenilo.
             </p>
           </div>
-          <div className="relative aspect-[4/5] overflow-hidden rounded-t-full rounded-b-[28px]">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-t-full rounded-b-[28px] pt-5">
             <Image
-              src="/assets/images/light-colors-bouquet.jpg"
-              alt="Buket u nežnim pastelnim bojama"
+              src="/assets/images/o-nama-kaca.webp"
+              alt="Kaća sa buketom"
               fill
               priority
               sizes="(min-width: 1024px) 560px, 100vw"
-              className="object-cover"
+              className="object-cover object-[50%_30%]"
             />
           </div>
         </Container>
@@ -92,8 +92,9 @@ export default function AboutPage() {
               </h2>
               <p className="text-base leading-relaxed text-body lg:text-lg">
                 Poklon koji izađe iz mojih ruku nije napravljen na traci. U
-                njega su otišli vreme, pažnja i jedna iskrena želja: da se osoba
-                koja ga otvori osmehne i oseti da je neko mislio baš na nju.
+                njega su uloženi vreme, pažnja i jedna iskrena želja: da se
+                osoba koja ga otvori osmehne i oseti da je neko mislio baš na
+                nju.
               </p>
               <p className="text-lg font-semibold text-rose-dark lg:text-xl">
                 Hvala što ste svratili. Dobrodošli tamo gde pokloni dobijaju

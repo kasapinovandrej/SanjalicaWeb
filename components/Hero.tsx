@@ -17,13 +17,11 @@ export default function Hero() {
         <div className="order-2 flex flex-col gap-[22px] lg:order-1 lg:gap-7">
           <p className="eyebrow">Ručno rađeni buketi i pokloni</p>
           <h1 className="font-serif text-[50px] leading-none tracking-[-0.01em] text-balance lg:text-[84px]">
-            Kad reči nisu dovoljne —{" "}
-            <em className="text-rose">tu smo mi.</em>
+            Kad reči nisu dovoljne — <em className="text-rose">tu smo mi.</em>
           </h1>
           <p className="max-w-[500px] text-base leading-relaxed text-body text-pretty lg:text-[19px]">
-            Buketi od mirisnog sojinog voska, slatki aranžmani i
-            personalizovani pokloni — izrađeni po meri, s ljubavlju i pažnjom,
-            za svaku priliku.
+            Buketi od mirisnog sojinog voska, slatki aranžmani i personalizovani
+            pokloni — izrađeni po meri, s ljubavlju i pažnjom, za svaku priliku.
           </p>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4 lg:pt-2">
             <ButtonLink href="/proizvodi">Pogledaj proizvode</ButtonLink>
@@ -34,7 +32,12 @@ export default function Hero() {
           <ul className="hidden flex-wrap gap-7 pt-5 text-sm text-body lg:flex">
             {highlights.map((item) => (
               <li key={item} className="flex items-center gap-2">
-                <Check size={18} strokeWidth={1.8} className="text-rose" aria-hidden />
+                <Check
+                  size={18}
+                  strokeWidth={1.8}
+                  className="text-rose"
+                  aria-hidden
+                />
                 {item}
               </li>
             ))}
@@ -45,8 +48,8 @@ export default function Hero() {
         <div className="relative order-1 w-full lg:order-2 lg:aspect-[540/624] lg:h-auto lg:max-w-[540px] lg:justify-self-end">
           <div className="relative h-[380px] w-full overflow-hidden rounded-t-full rounded-b-[20px] sm:h-[480px] lg:absolute lg:top-0 lg:right-0 lg:h-full lg:w-full lg:rounded-b-[28px]">
             <Image
-              src="/assets/images/bg-light-rose.png"
-              alt="Buket ruža od sojinog voska u beloj korpi"
+              src="/assets/images/kaca-buket.jpg"
+              alt="Kaća sa buketom u nežnim pastelnim bojama"
               fill
               priority
               sizes="(min-width: 1280px) 540px, (min-width: 1024px) 45vw, 100vw"
