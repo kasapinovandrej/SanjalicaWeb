@@ -5,8 +5,8 @@ export const site = {
   phone: "+381 63 7383 079", // npr. "+381 60 123 4567"
   email: "sanjalica98kv@gmail.com", // npr. "kontakt@sanjalica.rs"
   city: "Kraljevo",
-  instagram: "https://www.instagram.com/sanjalica_giftshop/", // pun link do Instagram profila
-  // facebook: "https://www.facebook.com/sanjalicaGiftShop", // pun link do Facebook stranice
+  instagram: "https://www.instagram.com/sanjalica_giftshop/",
+  // facebook: "https://www.facebook.com/sanjalicaGiftShop",
   delivery: "[ROK IZRADE] · [NAČIN DOSTAVE I GRADOVI]",
 };
 
@@ -19,6 +19,7 @@ export const navigation = [
 
 export const occasions = [
   "Rođendan",
+  "Svadba",
   "Godišnjica",
   "Slava",
   "Devojačko veče",

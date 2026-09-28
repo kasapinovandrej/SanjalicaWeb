@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatPrice, type Product } from "@/lib/products";
+import type { Product } from "@/api/products/productsType";
+import { formatPrice } from "@/lib/helpers";
 
 type ProductCardProps = {
   product: Product;
@@ -18,13 +19,15 @@ export default function ProductCard({
       className="group flex flex-col gap-2.5 lg:gap-4"
     >
       <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[14px] bg-blush lg:rounded-2xl">
-        <Image
-          src={product.image}
-          alt={product.name}
-          fill
-          sizes="(min-width: 1024px) 280px, 50vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-        />
+        {product.image[0] && (
+          <Image
+            src={product.image[0]}
+            alt={product.name}
+            fill
+            sizes="(min-width: 1024px) 280px, 50vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+          />
+        )}
       </div>
       <div className="flex flex-col gap-1.5">
         <h3 className="text-[15px] leading-snug font-semibold lg:text-lg">

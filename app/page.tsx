@@ -4,14 +4,17 @@ import Favorites from "@/components/Favorites";
 import Hero from "@/components/Hero";
 import HowToOrder from "@/components/HowToOrder";
 import Occasions from "@/components/Occasions";
+import { getProducts } from "@/api/products/productsApi";
 
-export default function Home() {
+export default async function Home() {
+  const products = await getProducts();
+
   return (
     <>
       <Hero />
       <Occasions />
       <Categories />
-      <Favorites />
+      <Favorites products={products.filter((p) => p.featured)} />
       <HowToOrder />
       <CtaSection />
     </>

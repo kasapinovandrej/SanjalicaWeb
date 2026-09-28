@@ -1,16 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { categories } from "@/lib/products";
+import { getCategories } from "@/api/categories/categoriseApi";
 import Container from "./ui/Container";
 import SectionHeading from "./ui/SectionHeading";
 
-export default function Categories() {
+export default async function Categories() {
+  const categories = await getCategories();
+
   return (
     <section className="py-16 lg:py-28">
       <Container className="flex flex-col gap-7 lg:gap-14">
         <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end lg:gap-10">
-          <SectionHeading eyebrow="Šta pravimo" title="Stvaramo nezaboravne trenutke" />
+          <SectionHeading
+            eyebrow="Šta pravimo"
+            title="Stvaramo nezaboravne trenutke"
+          />
           <p className="hidden max-w-[380px] text-[17px] leading-relaxed text-body lg:block">
             Svaki komad nastaje ručno, u malim serijama — zato je svaki poklon
             pomalo drugačiji.

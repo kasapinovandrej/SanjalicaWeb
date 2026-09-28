@@ -1,41 +1,46 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
+import ProductGallery from "@/components/ProductGallery";
 import ButtonLink from "@/components/ui/ButtonLink";
 import Container from "@/components/ui/Container";
 import { InstagramIcon } from "@/components/ui/icons";
-import {
-  formatPrice,
-  getCategory,
-  getProduct,
-  products,
-} from "@/lib/products";
+import { formatPrice } from "@/lib/helpers";
 import { site } from "@/lib/site";
+import { getCategories } from "@/api/categories/categoriseApi";
+import { getProducts } from "@/api/products/productsApi";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const products = await getProducts();
   return products.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const products = await getProducts();
+  const product = products.find((p) => p.slug === slug);
   if (!product) return {};
   return { title: product.name, description: product.description };
 }
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const [categories, products] = await Promise.all([
+    getCategories(),
+    getProducts(),
+  ]);
+  const product = products.find((p) => p.slug === slug);
   if (!product) notFound();
 
-  const category = getCategory(product.category);
+  const category = categories.find((c) => c.id === product.categoryId);
   const related = products
-    .filter((p) => p.category === product.category && p.slug !== product.slug)
+    .filter(
+      (p) => p.categoryId === product.categoryId && p.slug !== product.slug,
+    )
     .slice(0, 4);
 
   return (
@@ -51,16 +56,7 @@ export default async function ProductPage({ params }: Props) {
           </Link>
 
           <div className="grid gap-8 lg:grid-cols-2 lg:gap-20">
-            <div className="relative aspect-[3/4] overflow-hidden rounded-[20px] bg-blush lg:rounded-[28px]">
-              <Image
-                src={product.image}
-                alt={product.name}
-                fill
-                priority
-                sizes="(min-width: 1024px) 560px, 100vw"
-                className="object-cover"
-              />
-            </div>
+            <ProductGallery images={product.image} alt={product.name} />
 
             <div className="flex flex-col gap-5 lg:justify-center lg:gap-7">
               {category && (

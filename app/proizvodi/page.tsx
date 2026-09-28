@@ -4,7 +4,8 @@ import ProductCard from "@/components/ProductCard";
 import CtaSection from "@/components/CtaSection";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
-import { categories, getCategory, products } from "@/lib/products";
+import { getCategories } from "@/api/categories/categoriseApi";
+import { getProducts } from "@/api/products/productsApi";
 
 export const metadata: Metadata = {
   title: "Proizvodi",
@@ -18,9 +19,13 @@ export default async function ProductsPage({
   searchParams: Promise<{ kategorija?: string }>;
 }) {
   const { kategorija } = await searchParams;
-  const active = getCategory(kategorija);
+  const [categories, products] = await Promise.all([
+    getCategories(),
+    getProducts(),
+  ]);
+  const active = categories.find((c) => c.slug === kategorija);
   const list = active
-    ? products.filter((p) => p.category === active.slug)
+    ? products.filter((p) => p.categoryId === active.id)
     : products;
 
   const filters = [

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { featuredProducts } from "@/lib/products";
+import type { Product } from "@/api/products/productsType";
 import ProductCard from "./ProductCard";
 import ButtonLink from "./ui/ButtonLink";
 import Container from "./ui/Container";
@@ -11,7 +11,7 @@ import SectionHeading from "./ui/SectionHeading";
 
 const MOBILE_COUNT = 4;
 
-export default function Favorites() {
+export default function Favorites({ products }: { products: Product[] }) {
   const trackRef = useRef<HTMLUListElement>(null);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(true);
@@ -82,7 +82,7 @@ export default function Favorites() {
           onScroll={updateArrows}
           className="no-scrollbar grid grid-cols-2 gap-x-3.5 gap-y-6 lg:flex lg:snap-x lg:snap-mandatory lg:gap-8 lg:overflow-x-auto"
         >
-          {featuredProducts.map((product, i) => (
+          {products.map((product, i) => (
             <li
               key={product.slug}
               className={`lg:w-[calc((100%-96px)/4)] lg:shrink-0 lg:snap-start ${
