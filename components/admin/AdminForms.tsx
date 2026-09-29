@@ -134,16 +134,6 @@ export default function AdminForms() {
             />
           </section>
         </div>
-
-        <p className="mt-7 flex items-start gap-2 text-sm leading-relaxed text-muted">
-          <AlertCircle size={17} className="mt-0.5 shrink-0" />
-          Za čuvanje je potreban Supabase Storage bucket{" "}
-          <code className="rounded bg-white px-1.5 py-0.5 text-ink">
-            {storageBucket}
-          </code>{" "}
-          sa javnim čitanjem. Pre javnog puštanja obavezno uključi
-          autentifikaciju i RLS pravila za obe tabele i bucket.
-        </p>
       </div>
       <SuccessToast message={toastMessage} onClose={closeToast} />
     </div>
