@@ -3,10 +3,16 @@ import Image from "next/image";
 import CtaSection from "@/components/CtaSection";
 import HowToOrder from "@/components/HowToOrder";
 import Container from "@/components/ui/Container";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "O nama",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "O nama — ručno rađeni pokloni iz Kraljeva",
+  description:
+    "Upoznajte Kaću i priču iza Sanjalice: svaki buket od sojinog voska, jesmonit dekoraciju i personalizovani poklon pravim ručno, s pažnjom za svaki detalj.",
+  path: "/o-nama",
+  image: "/assets/images/o-nama-kaca.webp",
+  imageAlt: "Kaća, osnivačica Sanjalica Gift Shop-a, sa buketom",
+});
 
 export default function AboutPage() {
   return (

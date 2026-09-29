@@ -9,7 +9,9 @@ import ProductGallery from "@/components/ProductGallery";
 import ButtonLink from "@/components/ui/ButtonLink";
 import Container from "@/components/ui/Container";
 import { InstagramIcon } from "@/components/ui/icons";
+import JsonLd from "@/components/JsonLd";
 import { formatPrice } from "@/lib/helpers";
+import { pageMetadata, truncate } from "@/lib/seo";
 import { site } from "@/lib/site";
 import { getCategories } from "@/api/categories/categoriseApi";
 import { getProducts } from "@/api/products/productsApi";
@@ -22,7 +24,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const products = await getProducts();
   const product = products.find((p) => p.slug === slug);
   if (!product) return {};
-  return { title: product.name, description: product.description };
+  return pageMetadata({
+    title: product.name,
+    description: truncate(
+      `${product.description} Ručno rađen poklon po meri — Sanjalica Gift Shop, ${site.city}.`,
+    ),
+    path: `/proizvodi/${product.slug}`,
+    image: product.image?.[0],
+    imageAlt: product.name,
+  });
 }
 
 export default async function ProductPage({ params }: Props) {
@@ -42,8 +52,55 @@ export default async function ProductPage({ params }: Props) {
     )
     .slice(0, 4);
 
+  const productUrl = `${site.url}/proizvodi/${product.slug}`;
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: product.name,
+      description: product.description,
+      image: product.image,
+      url: productUrl,
+      ...(category && { category: category.title }),
+      brand: { "@type": "Brand", name: site.name },
+      // Google prikazuje cenu u rezultatima samo kada je poznata.
+      ...(product.price !== null && {
+        offers: {
+          "@type": "Offer",
+          price: product.price,
+          priceCurrency: "RSD",
+          availability: "https://schema.org/MadeToOrder",
+          url: productUrl,
+          seller: { "@id": `${site.url}/#store` },
+        },
+      }),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { name: "Početna", item: site.url },
+        { name: "Proizvodi", item: `${site.url}/proizvodi` },
+        ...(category
+          ? [
+              {
+                name: category.title,
+                item: `${site.url}/proizvodi?kategorija=${category.slug}`,
+              },
+            ]
+          : []),
+        { name: product.name, item: productUrl },
+      ].map((crumb, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        ...crumb,
+      })),
+    },
+  ];
+
   return (
     <>
+      <JsonLd data={jsonLd} />
       <section className="py-8 lg:py-16">
         <Container className="flex flex-col gap-6 lg:gap-10">
           <div className="flex items-center justify-between gap-4">

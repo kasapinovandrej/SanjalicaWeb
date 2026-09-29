@@ -7,18 +7,39 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import { getCategories } from "@/api/categories/categoriseApi";
 import { getProducts } from "@/api/products/productsApi";
 import { getCurrentUser } from "@/api/supabaseServer";
+import { pageMetadata, truncate } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Proizvodi",
-  description:
-    "Buketi od sojinog voska, slatki aranžmani i personalizovani pokloni.",
-};
+type Props = { searchParams: Promise<{ kategorija?: string }> };
 
-export default async function ProductsPage({
+export async function generateMetadata({
   searchParams,
-}: {
-  searchParams: Promise<{ kategorija?: string }>;
-}) {
+}: Props): Promise<Metadata> {
+  const { kategorija } = await searchParams;
+  const category = kategorija
+    ? (await getCategories()).find((c) => c.slug === kategorija)
+    : undefined;
+
+  if (category) {
+    return pageMetadata({
+      title: category.title,
+      description: truncate(
+        `${category.description} Ručno rađeno u Kraljevu, po meri i sa dostavom širom Srbije.`,
+      ),
+      path: `/proizvodi?kategorija=${category.slug}`,
+      image: category.image,
+      imageAlt: category.imageAlt,
+    });
+  }
+
+  return pageMetadata({
+    title: "Pokloni i buketi — ponuda",
+    description:
+      "Pogledajte bukete od mirisnog sojinog voska, slatke aranžmane i personalizovane poklone za rođendan, svadbu, godišnjicu, slavu i devojačko veče.",
+    path: "/proizvodi",
+  });
+}
+
+export default async function ProductsPage({ searchParams }: Props) {
   const { kategorija } = await searchParams;
   const [categories, products, user] = await Promise.all([
     getCategories(),

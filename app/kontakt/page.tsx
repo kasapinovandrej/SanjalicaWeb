@@ -4,11 +4,14 @@ import HowToOrder from "@/components/HowToOrder";
 import ButtonLink from "@/components/ui/ButtonLink";
 import Container from "@/components/ui/Container";
 import { InstagramIcon } from "@/components/ui/icons";
+import { pageMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Kontakt",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Kontakt — poručite poklon po meri",
+  description: `Poručite buket, slatki aranžman ili personalizovani poklon za rođendan, svadbu, slavu ili godišnjicu. Pozovite ${site.phone} ili pišite na Instagramu — ${site.city} i dostava širom Srbije.`,
+  path: "/kontakt",
+});
 
 const contacts = [
   {
