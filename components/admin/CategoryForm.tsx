@@ -5,10 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Check, LoaderCircle } from "lucide-react";
-import {
-  createCategory,
-  updateCategory,
-} from "@/api/categories/categoriseApi";
+import { createCategory, updateCategory } from "@/api/categories/categoriseApi";
 import { removeImages, resolveImage } from "@/api/images/imagesApi";
 import type { Category } from "@/api/categories/categoriseType";
 import ImageDropzone from "./ImageDropzone";
@@ -140,7 +137,7 @@ export default function CategoryForm({
           Opis fotografije
           <input
             className={inputClass}
-            placeholder="Buket ruža u nežnim bojama"
+            placeholder="Opis fotografije za pristupačnost i SEO"
             {...form.register("imageAlt")}
           />
           <FieldError>{errors.imageAlt?.message}</FieldError>

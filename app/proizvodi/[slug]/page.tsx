@@ -103,24 +103,24 @@ export default async function ProductPage({ params }: Props) {
       <JsonLd data={jsonLd} />
       <section className="py-8 lg:py-16">
         <Container className="flex flex-col gap-6 lg:gap-10">
-          <div className="flex items-center justify-between gap-4">
-            <Link
-              href="/proizvodi"
-              className="inline-flex items-center gap-2 text-[15px] font-semibold text-body hover:text-rose"
-            >
-              <ArrowLeft size={16} aria-hidden />
-              Svi proizvodi
-            </Link>
-            {user && (
-              <div className="flex gap-2">
-                <EditProductButton product={product} />
-                <DeleteProductButton product={product} />
-              </div>
-            )}
-          </div>
+          <Link
+            href="/proizvodi"
+            className="inline-flex items-center gap-2 self-start text-[15px] font-semibold text-body hover:text-rose"
+          >
+            <ArrowLeft size={16} aria-hidden />
+            Svi proizvodi
+          </Link>
 
-          <div className="grid gap-8 lg:grid-cols-2 lg:gap-20">
-            <ProductGallery images={product.image} alt={product.name} />
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-20">
+            <div className="relative min-w-0">
+              {user && (
+                <div className="absolute top-3 right-3 z-20 flex gap-2 lg:top-4 lg:right-4">
+                  <EditProductButton product={product} />
+                  <DeleteProductButton product={product} />
+                </div>
+              )}
+              <ProductGallery images={product.image} alt={product.name} />
+            </div>
 
             <div className="flex flex-col gap-5 lg:justify-center lg:gap-7">
               {category && (

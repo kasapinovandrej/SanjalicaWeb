@@ -1,12 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { A11y, Keyboard } from "swiper/modules";
+import { A11y, FreeMode, Keyboard, Mousewheel } from "swiper/modules";
 import type { Swiper as SwiperClass } from "swiper";
 import "swiper/css";
+import "swiper/css/free-mode";
 
 type ProductGalleryProps = {
   images: string[];
@@ -22,6 +23,12 @@ const arrowClass =
 export default function ProductGallery({ images, alt }: ProductGalleryProps) {
   const [swiper, setSwiper] = useState<SwiperClass>();
   const [active, setActive] = useState(0);
+  const [thumbs, setThumbs] = useState<SwiperClass>();
+
+  // Drži aktivnu sličicu vidljivom u traci.
+  useEffect(() => {
+    thumbs?.slideTo(Math.max(0, active - 1));
+  }, [thumbs, active]);
 
   if (images.length <= 1) {
     return (
@@ -41,7 +48,7 @@ export default function ProductGallery({ images, alt }: ProductGalleryProps) {
   }
 
   return (
-    <div className="flex flex-col gap-3 lg:gap-4">
+    <div className="flex min-w-0 flex-col gap-3 lg:gap-4">
       <div className={frameClass}>
         <Swiper
           modules={[A11y, Keyboard]}
@@ -86,9 +93,19 @@ export default function ProductGallery({ images, alt }: ProductGalleryProps) {
         </span>
       </div>
 
-      <ul className="no-scrollbar flex gap-2.5 overflow-x-auto lg:gap-3">
+      <Swiper
+        modules={[FreeMode, Mousewheel]}
+        onSwiper={setThumbs}
+        slidesPerView="auto"
+        spaceBetween={10}
+        breakpoints={{ 1024: { spaceBetween: 12 } }}
+        freeMode
+        mousewheel={{ forceToAxis: false, releaseOnEdges: true }}
+        grabCursor
+        className="w-full"
+      >
         {images.map((src, i) => (
-          <li key={src} className="shrink-0">
+          <SwiperSlide key={src} className="w-auto!">
             <button
               type="button"
               onClick={() => swiper?.slideTo(i)}
@@ -108,9 +125,9 @@ export default function ProductGallery({ images, alt }: ProductGalleryProps) {
                 className="object-cover"
               />
             </button>
-          </li>
+          </SwiperSlide>
         ))}
-      </ul>
+      </Swiper>
     </div>
   );
 }
